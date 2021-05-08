@@ -33,7 +33,7 @@ class _AppState extends State<App> {
         appBar: AppBar(
           title: Text("jupi"),
         ),
-        body: _children[_currentIndex],
+          body: _children[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           onTap: onTabTapped, // new
