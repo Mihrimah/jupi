@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:jupi/model/user_param.dart';
 
-class Homepage extends StatefulWidget {
+class DashPage extends StatefulWidget {
+
   @override
-  _HomepageState createState() => _HomepageState();
+  _DashPageState createState() => _DashPageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _DashPageState extends State<DashPage> {
   CarouselController buttonCarouselController = CarouselController();
 
   @override

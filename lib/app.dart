@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jupi/pages/compatibility.dart';
-import 'package:jupi/pages/homepage.dart';
-import 'package:jupi/pages/profile.dart';
+import 'package:jupi/model/user_param.dart';
+import 'package:jupi/pages/home_page.dart';
+import 'package:jupi/pages/start/dob_page.dart';
+import 'package:jupi/pages/start/name_page.dart';
 
 class App extends StatefulWidget {
   @override
@@ -9,44 +10,47 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int _currentIndex = 0;
-  final List<Widget> _children = [
-    Homepage(),
-    Compatibility(),
-    Profile()
-  ];
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      onGenerateRoute: (settings) {
+        if(settings.name == '/namePage'){
+          return MaterialPageRoute(
+            builder: (context) {
+              return NamePage();
+            },
+          );
+        }
+        else if (settings.name == '/dobPage') {
+          final UserParam args = settings.arguments as UserParam;
+          return MaterialPageRoute(
+            builder: (context) {
+              return DobPage(args);
+            },
+          );
+        } else if(settings.name == '/homePage'){
+          final UserParam args = settings.arguments as UserParam;
+          return MaterialPageRoute(
+            builder: (context) {
+              return HomePage(args);
+            },
+          );
+        }
+        assert(false, 'Implementation ${settings.name}');
+        return null;
+      },
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("jupi"),
-        ),
-          body: _children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          onTap: onTabTapped, // new
-          currentIndex: _currentIndex, // new
-          items: [
-            new BottomNavigationBarItem(
-                icon: Icon(Icons.list), label: "MyBets"),
-            new BottomNavigationBarItem(
-                icon: Icon(Icons.monetization_on_sharp), label: "Bet"),
-            new BottomNavigationBarItem(
-                icon: Icon(Icons.person_rounded), label: 'Profile')
-          ],
-        ),
+          body: NamePage(),
       ),
     );
   }

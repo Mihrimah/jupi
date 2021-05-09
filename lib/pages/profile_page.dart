@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class Compatibility extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   @override
-  _CompatibilityState createState() => _CompatibilityState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _CompatibilityState extends State<Compatibility> {
+class _ProfilePageState extends State<ProfilePage> {
   CarouselController buttonCarouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Text("Compatibility")
+      child: Text("Profile")
     );
   }
 }
