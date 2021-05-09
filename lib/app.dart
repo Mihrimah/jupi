@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jupi/model/user_param.dart';
 import 'package:jupi/pages/home_page.dart';
 import 'package:jupi/pages/start/dob_page.dart';
+import 'package:jupi/pages/start/dob_time_page.dart';
 import 'package:jupi/pages/start/name_page.dart';
 
 class App extends StatefulWidget {
@@ -32,6 +33,13 @@ class _AppState extends State<App> {
           return MaterialPageRoute(
             builder: (context) {
               return DobPage(args);
+            },
+          );
+        } else if (settings.name == '/dobTimePage') {
+          final UserParam args = settings.arguments as UserParam;
+          return MaterialPageRoute(
+            builder: (context) {
+              return DobTimePage(args);
             },
           );
         } else if(settings.name == '/homePage'){

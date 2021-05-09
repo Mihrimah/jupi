@@ -1,39 +1,52 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:jupi/constant/constant.dart';
 import 'package:jupi/core/custom_picker.dart';
 import 'package:jupi/model/user_param.dart';
+import 'package:jupi/util/util.dart';
 
-class DobPage extends StatefulWidget {
+class DobTimePage extends StatefulWidget {
   final UserParam userParam;
 
-  DobPage(this.userParam);
+  DobTimePage(this.userParam);
 
   @override
-  _DobPageState createState() => _DobPageState();
+  _DobTimePageState createState() => _DobTimePageState();
 }
 
-class _DobPageState extends State<DobPage> {
-  TextEditingController _dobTextController = TextEditingController();
+class _DobTimePageState extends State<DobTimePage> {
+  TextEditingController _dobTimeTextController = TextEditingController();
 
   bool isEnabled = false;
-  DateTime? dob;
+  DateTime? time;
 
   @override
   void initState() {
     super.initState();
-    _dobTextController.addListener(_checkButtonEnable);
+    time = DateTime(2020, 03, 07, 00, 00);
+    _dobTimeTextController.value = TextEditingValue(
+        text: time!.hour.toString() + ":" + time!.minute.toString());
+    _dobTimeTextController.addListener(_checkButtonEnable);
   }
 
   onPressedNext() {
-    widget.userParam.dob = dob!;
-    Navigator.pushNamed(context, "/dobTimePage", arguments: widget.userParam);
+    //widget.userParam.dob = dob!;
+    DateTime newDob = DateTime(
+        widget.userParam.dob.year,
+        widget.userParam.dob.month,
+        widget.userParam.dob.day,
+        time!.hour,
+        time!.minute);
+    widget.userParam.dob = newDob;
+    widget.userParam.horoscope = Util.getHoroscope(newDob);
+    Navigator.pushNamed(context, "/homePage", arguments: widget.userParam);
   }
 
   onDateSubmitted(date) {
     print("asdas");
     setState(() {
-      dob = date;
+      time = date;
     });
   }
 
@@ -42,16 +55,14 @@ class _DobPageState extends State<DobPage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(
-              height: 25,
-            ),
+            SizedBox(height: 25,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Enter Birth Date And Time",
+                  "Enter Birth Time",
                   style: TextStyle(fontSize: 25),
                 ),
               ],
@@ -61,7 +72,7 @@ class _DobPageState extends State<DobPage> {
                 children: [
                   Expanded(
                     child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
                           enabled: true,
@@ -70,31 +81,26 @@ class _DobPageState extends State<DobPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 30),
                           decoration: InputDecoration(
-                            hintText: "Date of birth",
+                            hintText: "Date of time",
                           ),
                           onTap: () {
-                            DatePicker.showDatePicker(context,
+                            DatePicker.showTimePicker(context,
                                 showTitleActions: true,
-                                minTime: DateTime(1900, 1, 1),
-                                maxTime: DateTime.now(), onChanged: (date) {
+                                showSecondsColumn: false, onChanged: (date) {
                               print('change $date in time zone ' +
                                   date.timeZoneOffset.inHours.toString());
                             }, onConfirm: (date) {
-                              _dobTextController.value = TextEditingValue(
-                                  text: date.day.toString() +
-                                      " " +
-                                      Constant.months[date.month].toString() +
-                                      " " +
-                                      date.year.toString());
+                              _dobTimeTextController.value = TextEditingValue(
+                                  text: date.hour.toString() +
+                                      ":" +
+                                      date.minute.toString());
                               setState(() {
-                                dob = date;
+                                time = date;
                               });
                               print('confirm $date');
-                            },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.en);
+                            }, currentTime: DateTime.now());
                           },
-                          controller: _dobTextController,
+                          controller: _dobTimeTextController,
                         ),
                         Container(
                           width: double.infinity,
@@ -102,7 +108,9 @@ class _DobPageState extends State<DobPage> {
                           padding: EdgeInsets.only(left: 15, right: 15),
                           margin: EdgeInsets.only(top: 50),
                           child: ElevatedButton(
-                              onPressed: !isEnabled ? null : onPressedNext,
+                              onPressed: !isEnabled
+                                  ? null
+                                  : onPressedNext,
                               child: Text("Next")),
                         ),
                       ],
@@ -118,7 +126,7 @@ class _DobPageState extends State<DobPage> {
   }
 
   _checkButtonEnable() {
-    if (_dobTextController.text == '') {
+    if (_dobTimeTextController.text == '') {
       setState(() {
         isEnabled = false;
       });

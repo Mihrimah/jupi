@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jupi/model/user_param.dart';
 
 class NamePage extends StatefulWidget {
-
   @override
   _NamePageState createState() => _NamePageState();
 }
@@ -20,35 +19,60 @@ class _NamePageState extends State<NamePage> {
   onPressedNext() {
     UserParam userParam = UserParam();
     userParam.name = _nameTextController.text;
-    Navigator.pushNamed(context, "/dobPage",arguments: userParam);
+    Navigator.pushNamed(context, "/dobPage", arguments: userParam);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(
-            maxLength: 200,
-            maxLines: 5,
-            decoration: InputDecoration(
-              hintText: "Name",
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Enter Your name",
+                  style: TextStyle(fontSize: 25),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 30),
+                        decoration: InputDecoration(
+                          hintText: "name",
+                        ),
+                        controller: _nameTextController,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 40,
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        margin: EdgeInsets.only(top: 50),
+                        child: ElevatedButton(
+                            onPressed: !isEnabled ? null : onPressedNext,
+                            child: Text("Next")),
+                      ),
+                    ],
+                  ))
+                ],
               ),
             ),
-            controller: _nameTextController,
-          ),
-          ElevatedButton(
-              onPressed: !isEnabled
-                  ? null
-                  : onPressedNext,
-              child: Text("Next"))
-        ],
+          ],
+        ),
       ),
     );
   }
