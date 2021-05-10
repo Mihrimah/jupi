@@ -50,7 +50,6 @@ class _AppState extends State<App> {
     if (firstEntry) {
       return NamePage();
     } else {
-      User user = User("Erkan", DateTime.now(), HoroscopeEnum.Capricorn);
       return Provider(create: (_) => user, child: HomePage());
     }
   }
