@@ -1,35 +1,23 @@
 import 'dart:convert';
 
+import 'package:jupi/enum/horoscope_enum.dart';
+import 'package:jupi/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalRepository {
-  /*
-  addRoomDataToStorage(String roomCode, List<RetroDataModel> list) async {
+
+  addUserData(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(roomCode, jsonEncode(list));
+    prefs.setString("USERDATA",User.toJson(user));
   }
 
-  Future<List<RetroDataModel>> getRoomDataFromStorage(String roomCode) async {
+  Future<User?> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    List<RetroDataModel> list = jsonDecode(prefs.getString(roomCode))
-        .map((m) => RetroDataModel.fromJson(m))
-        .toList().cast<RetroDataModel>();
-    return list;
-  }
-*/
-  Future<Set<String>> getSavedAllDataFromStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getKeys();
-  }
-
-  Future<int> getNumberOfSavedRecord() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getKeys().length;
-  }
-
-  void deleteRoomData(String roomCode) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(roomCode);
+    String? data = prefs.getString("USERDATA");
+    if (data != null) {
+      User user = User.fromJson(data);
+      return Future.value(user);
+    }
+    return Future.value(null);
   }
 }

@@ -18,3 +18,8 @@ extension EnumValue on HoroscopeEnum {
     return this.toString().split('.').last;
   }
 }
+
+HoroscopeEnum horoscopeEnumFromString(String value){
+  return HoroscopeEnum.values.firstWhere((e)=>
+  e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+}

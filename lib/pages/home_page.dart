@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
 import 'package:jupi/pages/compatibility_page.dart';
 import 'package:jupi/pages/dash_page.dart';
 import 'package:jupi/pages/profile_page.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  final UserParam userParam;
-
-  HomePage(this.userParam);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("jupi"),
+        title: Text(context.watch<User>().name),
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

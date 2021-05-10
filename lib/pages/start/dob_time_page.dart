@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:jupi/constant/constant.dart';
 import 'package:jupi/core/custom_picker.dart';
+import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
+import 'package:jupi/repository/local_repository.dart';
 import 'package:jupi/util/util.dart';
 
 class DobTimePage extends StatefulWidget {
@@ -17,7 +19,7 @@ class DobTimePage extends StatefulWidget {
 
 class _DobTimePageState extends State<DobTimePage> {
   TextEditingController _dobTimeTextController = TextEditingController();
-
+  LocalRepository localRepository = LocalRepository();
   bool isEnabled = false;
   DateTime? time;
 
@@ -40,6 +42,7 @@ class _DobTimePageState extends State<DobTimePage> {
         time!.minute);
     widget.userParam.dob = newDob;
     widget.userParam.horoscope = Util.getHoroscope(newDob);
+    localRepository.addUserData(User.of(widget.userParam));
     Navigator.pushNamed(context, "/homePage", arguments: widget.userParam);
   }
 
