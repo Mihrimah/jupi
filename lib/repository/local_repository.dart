@@ -13,6 +13,7 @@ class LocalRepository {
 
   Future<User?> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    //prefs.clear();
     String? data = prefs.getString("USERDATA");
     if (data != null) {
       User user = User.fromJson(data);

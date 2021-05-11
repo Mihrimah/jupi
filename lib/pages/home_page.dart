@@ -40,11 +40,11 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _currentIndex, // new
         items: [
           new BottomNavigationBarItem(
-              icon: Icon(Icons.list), label: "MyBets"),
+              icon: Icon(Icons.list), label: "Home"),
           new BottomNavigationBarItem(
-              icon: Icon(Icons.monetization_on_sharp), label: "Bet"),
+              icon: Icon(Icons.monetization_on_sharp), label: "Compatability"),
           new BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded), label: 'Profile')
+              icon: Icon(Icons.person_rounded), label: 'You')
         ],
       ),
     );
