@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jupi/enum/horoscope_enum.dart';
+import 'package:jupi/model/compatibility_request.dart';
 import 'package:jupi/model/horoscope.dart';
 import 'package:jupi/model/user.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,24 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
     }
   }
 
+  List<TextButton> getHoroscopes(int whichCol) {
+    int firstVal = whichCol == 1 ? 0 : 6;
+    int seconfVal = whichCol == 1 ? 6 : 12;
+    return HoroscopeEnum.values
+        .getRange(firstVal, seconfVal)
+        .map((e) => TextButton(
+              style: ButtonStyle(
+                overlayColor: MaterialStateColor.resolveWith(
+                    (states) => Colors.transparent),
+              ),
+              onPressed: () {
+                setHoroscope(e);
+              },
+              child: Text(e.name(),style: TextStyle(fontSize: 16),),
+            ))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -61,7 +80,9 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
                 child: Container(
                   width: 100,
                   height: 100,
-                  child: Center(child: Text(ownHoroscope == null ? "" : ownHoroscope!.name())),
+                  child: Center(
+                      child: Text(
+                          ownHoroscope == null ? "" : ownHoroscope!.name())),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(40),
@@ -113,101 +134,30 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(children: [
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent),
-                        ),
-                        onPressed: () {
-                          setHoroscope(HoroscopeEnum.Capricorn);
-                        },
-                        child: Text(HoroscopeEnum.Capricorn.name()),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent),
-                        ),
-                        onPressed: () {
-                          setHoroscope(HoroscopeEnum.Libra);
-                        },
-                        child: Text(HoroscopeEnum.Libra.name()),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent),
-                        ),
-                        onPressed: () {
-                          setHoroscope(HoroscopeEnum.Capricorn);
-                        },
-                        child: Text(HoroscopeEnum.Capricorn.name()),
-                      ),
-                    ),
-                  ]),
-                  Column(children: [
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent),
-                        ),
-                        onPressed: () {
-                          setHoroscope(HoroscopeEnum.Capricorn);
-                        },
-                        child: Text(HoroscopeEnum.Capricorn.name()),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent),
-                        ),
-                        onPressed: () {
-                          setHoroscope(HoroscopeEnum.Capricorn);
-                        },
-                        child: Text(HoroscopeEnum.Capricorn.name()),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent),
-                        ),
-                        onPressed: () {
-                          setHoroscope(HoroscopeEnum.Capricorn);
-                        },
-                        child: Text(HoroscopeEnum.Capricorn.name()),
-                      ),
-                    ),
-                  ]),
+                  Column(
+                    children: getHoroscopes(1),
+                  ),
+                  Column(
+                    children: getHoroscopes(0),
+                  ),
                 ],
               ),
               Container(
                 width: double.infinity,
                 height: 40,
+                margin: EdgeInsets.only(top: 5),
                 padding: EdgeInsets.only(left: 15, right: 15),
-                margin: EdgeInsets.only(top: 50),
-                child: ElevatedButton(onPressed: () {}, child: Text("Save")),
+                child: ElevatedButton(onPressed: onCompare, child: Text("Show Compatibility")),
               )
             ],
           ))
         ],
       ),
     );
+  }
+
+  void onCompare() {
+    CompatibilityRequest cr = CompatibilityRequest(ownHoroscope!, otherHoroscope);
+    Navigator.pushNamed(context, "/compatibilityResultPage", arguments: cr);
   }
 }

@@ -3,6 +3,7 @@ import 'package:jupi/enum/horoscope_enum.dart';
 import 'package:jupi/model/horoscope.dart';
 import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
+import 'package:jupi/pages/compatibility_result_page.dart';
 import 'package:jupi/pages/home_page.dart';
 import 'package:jupi/pages/start/dob_page.dart';
 import 'package:jupi/pages/start/dob_time_page.dart';
@@ -10,6 +11,8 @@ import 'package:jupi/pages/start/name_page.dart';
 import 'package:jupi/repository/local_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model/compatibility_request.dart';
 
 class App extends StatefulWidget {
   @override
@@ -91,6 +94,13 @@ class _AppState extends State<App> {
                 create: (_) => user,
                 child: HomePage(),
               );
+            },
+          );
+        } else if (settings.name == '/compatibilityResultPage') {
+          final CompatibilityRequest args = settings.arguments as CompatibilityRequest;
+          return MaterialPageRoute(
+            builder: (context) {
+              return CompatibilityResultPage(args.ownHoroscope, args.otherHoroscope);
             },
           );
         }
