@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:jupi/constant/constant.dart';
-import 'package:jupi/core/custom_picker.dart';
 import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
 import 'package:jupi/repository/local_repository.dart';
 import 'package:jupi/util/util.dart';
+import 'package:provider/provider.dart';
+
+import '../home_page2.dart';
 
 class DobTimePage extends StatefulWidget {
   final UserParam userParam;
@@ -43,11 +44,16 @@ class _DobTimePageState extends State<DobTimePage> {
     widget.userParam.dob = newDob;
     widget.userParam.horoscope = Util.getHoroscope(newDob);
     localRepository.addUserData(User.of(widget.userParam));
-    Navigator.pushNamed(context, "/homePage", arguments: widget.userParam);
+
+    User user = User.of(widget.userParam);
+    Provider.of<User>(context, listen: false).update(user);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return HomePage2();
+    }));
+    //Navigator.pushNamed(context, "/homePage", arguments: widget.userParam);
   }
 
   onDateSubmitted(date) {
-    print("asdas");
     setState(() {
       time = date;
     });
@@ -60,7 +66,9 @@ class _DobTimePageState extends State<DobTimePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(height: 25,),
+            SizedBox(
+              height: 25,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -111,9 +119,7 @@ class _DobTimePageState extends State<DobTimePage> {
                           padding: EdgeInsets.only(left: 15, right: 15),
                           margin: EdgeInsets.only(top: 50),
                           child: ElevatedButton(
-                              onPressed: !isEnabled
-                                  ? null
-                                  : onPressedNext,
+                              onPressed: !isEnabled ? null : onPressedNext,
                               child: Text("Next")),
                         ),
                       ],

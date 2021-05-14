@@ -7,5 +7,7 @@ import 'enum/horoscope_enum.dart';
 import 'model/user.dart';
 
 void main() {
-  runApp(Provider(create: (_) => User("", DateTime.now(), HoroscopeEnum.Taurus), child: App()));
+  runApp(Provider(
+      create: (_) => User("", DateTime.now(), HoroscopeEnum.Taurus),
+      child: App()));
 }

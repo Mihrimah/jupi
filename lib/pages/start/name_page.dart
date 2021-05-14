@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
+import 'package:jupi/pages/start/dob_page.dart';
+import 'package:provider/provider.dart';
 
 class NamePage extends StatefulWidget {
   @override
@@ -19,11 +22,15 @@ class _NamePageState extends State<NamePage> {
   onPressedNext() {
     UserParam userParam = UserParam();
     userParam.name = _nameTextController.text;
-    Navigator.pushNamed(context, "/dobPage", arguments: userParam);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return DobPage(userParam);
+    }));
+    //Navigator.pushNamed(context, "/dobPage", arguments: userParam);
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -46,7 +53,7 @@ class _NamePageState extends State<NamePage> {
                 children: [
                   Expanded(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
                         maxLines: 1,
@@ -63,7 +70,9 @@ class _NamePageState extends State<NamePage> {
                         padding: EdgeInsets.only(left: 15, right: 15),
                         margin: EdgeInsets.only(top: 50),
                         child: ElevatedButton(
-                            onPressed: !isEnabled ? null : onPressedNext,
+                            onPressed: !isEnabled
+                                ? null
+                                : onPressedNext,
                             child: Text("Next")),
                       ),
                     ],

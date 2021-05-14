@@ -74,36 +74,7 @@ class _AppState extends State<App> {
       ),
       themeMode: ThemeMode.dark,
       onGenerateRoute: (settings) {
-        if (settings.name == '/namePage') {
-          return MaterialPageRoute(
-            builder: (context) {
-              return NamePage();
-            },
-          );
-        } else if (settings.name == '/dobPage') {
-          final UserParam args = settings.arguments as UserParam;
-          return MaterialPageRoute(
-            builder: (context) {
-              return DobPage(args);
-            },
-          );
-        } else if (settings.name == '/dobTimePage') {
-          final UserParam args = settings.arguments as UserParam;
-          return MaterialPageRoute(
-            builder: (context) {
-              return DobTimePage(args);
-            },
-          );
-        } else if (settings.name == '/homePage') {
-          final UserParam args = settings.arguments as UserParam;
-          User user = User.of(args);
-          Provider.of<User>(context).update(user);
-          return MaterialPageRoute(
-            builder: (context) {
-              return HomePage();
-            },
-          );
-        } else if (settings.name == '/compatibilityResultPage') {
+        if (settings.name == '/compatibilityResultPage') {
           final CompatibilityRequest args =
               settings.arguments as CompatibilityRequest;
           return MaterialPageRoute(

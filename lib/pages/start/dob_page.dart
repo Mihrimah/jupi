@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:jupi/constant/constant.dart';
 import 'package:jupi/core/custom_picker.dart';
+import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
+import 'package:provider/provider.dart';
+
+import 'dob_time_page.dart';
 
 class DobPage extends StatefulWidget {
   final UserParam userParam;
@@ -27,11 +31,13 @@ class _DobPageState extends State<DobPage> {
 
   onPressedNext() {
     widget.userParam.dob = dob!;
-    Navigator.pushNamed(context, "/dobTimePage", arguments: widget.userParam);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return DobTimePage(widget.userParam);
+    }));
+    //Navigator.pushNamed(context, "/dobTimePage", arguments: widget.userParam);
   }
 
   onDateSubmitted(date) {
-    print("asdas");
     setState(() {
       dob = date;
     });
@@ -39,6 +45,7 @@ class _DobPageState extends State<DobPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -61,7 +68,7 @@ class _DobPageState extends State<DobPage> {
                 children: [
                   Expanded(
                     child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
                           enabled: true,
