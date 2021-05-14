@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jupi/enum/horoscope_enum.dart';
-import 'package:jupi/model/horoscope.dart';
 import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
 import 'package:jupi/pages/compatibility_result_page.dart';
 import 'package:jupi/pages/home_page.dart';
+import 'package:jupi/pages/home_page2.dart';
 import 'package:jupi/pages/start/dob_page.dart';
 import 'package:jupi/pages/start/dob_time_page.dart';
 import 'package:jupi/pages/start/name_page.dart';
 import 'package:jupi/repository/local_repository.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/compatibility_request.dart';
 
@@ -31,7 +29,7 @@ class _AppState extends State<App> {
     getUserData();
   }
 
-   getUserData() {
+  getUserData() {
     _localRepository.getUserData().then((value) {
       if (value != null) {
         setState(() {
@@ -39,8 +37,7 @@ class _AppState extends State<App> {
           firstEntry = false;
           user = value;
         });
-      }
-      else {
+      } else {
         setState(() {
           isLoading = false;
           firstEntry = true;
@@ -53,17 +50,29 @@ class _AppState extends State<App> {
     if (firstEntry) {
       return NamePage();
     } else {
-      return Provider(create: (_) => user, child: HomePage());
+      Provider.of<User>(context).update(user);
+      return HomePage2();
     }
   }
 
-  Widget progressIndicator(){
-    return Center(child: CircularProgressIndicator(),);
+  Widget progressIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        /* light theme settings */
+      ),
+      themeMode: ThemeMode.dark,
       onGenerateRoute: (settings) {
         if (settings.name == '/namePage') {
           return MaterialPageRoute(
@@ -88,19 +97,19 @@ class _AppState extends State<App> {
         } else if (settings.name == '/homePage') {
           final UserParam args = settings.arguments as UserParam;
           User user = User.of(args);
+          Provider.of<User>(context).update(user);
           return MaterialPageRoute(
             builder: (context) {
-              return Provider(
-                create: (_) => user,
-                child: HomePage(),
-              );
+              return HomePage();
             },
           );
         } else if (settings.name == '/compatibilityResultPage') {
-          final CompatibilityRequest args = settings.arguments as CompatibilityRequest;
+          final CompatibilityRequest args =
+              settings.arguments as CompatibilityRequest;
           return MaterialPageRoute(
             builder: (context) {
-              return CompatibilityResultPage(args.ownHoroscope, args.otherHoroscope);
+              return CompatibilityResultPage(
+                  args.ownHoroscope, args.otherHoroscope);
             },
           );
         }
@@ -108,9 +117,6 @@ class _AppState extends State<App> {
         return null;
       },
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: Scaffold(
         body: isLoading ? progressIndicator() : decideFirstScreen(),
       ),

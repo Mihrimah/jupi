@@ -6,6 +6,9 @@ import 'package:jupi/pages/dash_page.dart';
 import 'package:jupi/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 
+import 'nav_page.dart';
+import 'home_page2.dart';
+
 class HomePage extends StatefulWidget {
 
   @override
@@ -18,7 +21,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     DashPage(),
     CompatibilityPage(),
-    ProfilePage()
+    ProfilePage(),
+    HomePage2()
   ];
 
   void onTabTapped(int index) {
@@ -30,9 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.watch<User>().name),
-      ),
+      appBar: AppBar(title: Text("jupi"),toolbarHeight: 56,),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -44,7 +46,9 @@ class _HomePageState extends State<HomePage> {
           new BottomNavigationBarItem(
               icon: Icon(Icons.monetization_on_sharp), label: "Compatability"),
           new BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded), label: 'You')
+              icon: Icon(Icons.person_rounded), label: 'You'),
+          new BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded), label: 'Nav')
         ],
       ),
     );

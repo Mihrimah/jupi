@@ -7,9 +7,16 @@ import 'package:jupi/model/user_param.dart';
 class User {
   User(this.name, this.dob, this.horoscope);
 
+
   String name;
   DateTime dob;
   HoroscopeEnum horoscope;
+
+  update(User user) {
+    this.name = user.name;
+    this.dob = user.dob;
+    this.horoscope = user.horoscope;
+  }
 
   static User of(UserParam userParam) {
     return User(userParam.name, userParam.dob, userParam.horoscope);
