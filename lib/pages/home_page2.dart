@@ -91,8 +91,8 @@ class _HomePage2State extends State<HomePage2> {
                         borderRadius:
                             new BorderRadius.all(new Radius.circular(100.0)),
                         border: new Border.all(
-                          color: Colors.green,
-                          width: 7.0,
+                          color: Colors.orange,
+                          width: 2.0,
                         ),
                       ),
                     ),
@@ -108,12 +108,12 @@ class _HomePage2State extends State<HomePage2> {
                     height: childCircleheight,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/images/home.png')),
+                          image: AssetImage('assets/images/instagram.png')),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(100.0)),
                       border: new Border.all(
-                        color: Colors.orange,
-                        width: 7.0,
+                        color: Colors.grey,
+                        width: 3.0,
                       ),
                     ),
                   ),
@@ -155,7 +155,7 @@ class _HomePage2State extends State<HomePage2> {
                             new BorderRadius.all(new Radius.circular(100.0)),
                         border: new Border.all(
                           color: Colors.purple,
-                          width: 7.0,
+                          width: 3.0,
                         ),
                       ),
                     ),
@@ -176,7 +176,7 @@ class _HomePage2State extends State<HomePage2> {
                           new BorderRadius.all(new Radius.circular(100.0)),
                       border: new Border.all(
                         color: Colors.red,
-                        width: 7.0,
+                        width: 3.0,
                       ),
                     ),
                   )
@@ -216,7 +216,7 @@ class LinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = Colors.green
+      ..color = Colors.white
       ..strokeWidth = 2.0
       ..style = PaintingStyle.fill;
     var myCanvas = TouchyCanvas(context, canvas);
