@@ -7,7 +7,7 @@ import 'package:jupi/repository/local_repository.dart';
 import 'package:jupi/util/util.dart';
 import 'package:provider/provider.dart';
 
-import '../home_page2.dart';
+import '../home_page.dart';
 
 class DobTimePage extends StatefulWidget {
   final UserParam userParam;
@@ -48,7 +48,7 @@ class _DobTimePageState extends State<DobTimePage> {
     User user = User.of(widget.userParam);
     Provider.of<User>(context, listen: false).update(user);
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return HomePage2();
+      return HomePage();
     }));
     //Navigator.pushNamed(context, "/homePage", arguments: widget.userParam);
   }

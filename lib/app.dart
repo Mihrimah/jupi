@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jupi/model/user.dart';
 import 'package:jupi/model/user_param.dart';
 import 'package:jupi/pages/compatibility_result_page.dart';
+import 'package:jupi/pages/home_page_old.dart';
 import 'package:jupi/pages/home_page.dart';
-import 'package:jupi/pages/home_page2.dart';
 import 'package:jupi/pages/start/dob_page.dart';
 import 'package:jupi/pages/start/dob_time_page.dart';
 import 'package:jupi/pages/start/name_page.dart';
@@ -51,7 +51,7 @@ class _AppState extends State<App> {
       return NamePage();
     } else {
       Provider.of<User>(context).update(user);
-      return HomePage2();
+      return HomePage();
     }
   }
 
