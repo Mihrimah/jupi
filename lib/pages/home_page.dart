@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:jupi/model/user.dart';
 import 'package:jupi/pages/dash_page.dart';
 import 'package:jupi/pages/own_horoscope_page.dart';
+import 'package:jupi/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:touchable/touchable.dart';
 
@@ -177,18 +178,27 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    key: child4Key,
-                    width: childCirclewidth,
-                    height: childCircleheight,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/user.png')),
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(100.0)),
-                      border: new Border.all(
-                        color: Colors.red,
-                        width: 3.0,
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfilePage()),
+                      );
+                    },
+                    child: Container(
+                      key: child4Key,
+                      width: childCirclewidth,
+                      height: childCircleheight,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/user.png')),
+                        borderRadius:
+                            new BorderRadius.all(new Radius.circular(100.0)),
+                        border: new Border.all(
+                          color: Colors.red,
+                          width: 3.0,
+                        ),
                       ),
                     ),
                   )

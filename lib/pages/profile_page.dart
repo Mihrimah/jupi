@@ -61,119 +61,124 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        TextFormField(
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 30),
-          decoration: InputDecoration(
-            labelText: 'Name',
-            labelStyle: TextStyle(
-                color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.purple),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Erkan"),
+      ),
+      body: ListView(
+        children: [
+          TextFormField(
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30),
+            decoration: InputDecoration(
+              labelText: 'Name',
+              labelStyle: TextStyle(
+                  color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.purple),
+              ),
+              enabledBorder: new UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0)),
             ),
-            enabledBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.0)),
+            controller: _nameTextController,
           ),
-          controller: _nameTextController,
-        ),
-        TextFormField(
-          enabled: true,
-          maxLines: 1,
-          readOnly: true,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 30),
-          decoration: InputDecoration(
-            labelText: 'Date Of Birth',
-            labelStyle: TextStyle(
-                color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.purple),
+          TextFormField(
+            enabled: true,
+            maxLines: 1,
+            readOnly: true,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30),
+            decoration: InputDecoration(
+              labelText: 'Date Of Birth',
+              labelStyle: TextStyle(
+                  color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.purple),
+              ),
+              enabledBorder: new UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0)),
             ),
-            enabledBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.0)),
+            onTap: () {
+              DatePicker.showDatePicker(context,
+                  showTitleActions: true,
+                  minTime: DateTime(1900, 1, 1),
+                  maxTime: DateTime.now(), onChanged: (date) {
+                print('change $date in time zone ' +
+                    date.timeZoneOffset.inHours.toString());
+              }, onConfirm: (date) {
+                    _horoscopeTextController.value = TextEditingValue(text: Util.getHoroscope(date).name());
+                    _dobTextController.value = TextEditingValue(
+                    text: date.day.toString() +
+                        " " +
+                        Constant.months[date.month].toString() +
+                        " " +
+                        date.year.toString());
+                setState(() {
+                  dob = date;
+                });
+              }, currentTime: DateTime.now(), locale: LocaleType.en);
+            },
+            controller: _dobTextController,
           ),
-          onTap: () {
-            DatePicker.showDatePicker(context,
-                showTitleActions: true,
-                minTime: DateTime(1900, 1, 1),
-                maxTime: DateTime.now(), onChanged: (date) {
-              print('change $date in time zone ' +
-                  date.timeZoneOffset.inHours.toString());
-            }, onConfirm: (date) {
-                  _horoscopeTextController.value = TextEditingValue(text: Util.getHoroscope(date).name());
-                  _dobTextController.value = TextEditingValue(
-                  text: date.day.toString() +
-                      " " +
-                      Constant.months[date.month].toString() +
-                      " " +
-                      date.year.toString());
-              setState(() {
-                dob = date;
-              });
-            }, currentTime: DateTime.now(), locale: LocaleType.en);
-          },
-          controller: _dobTextController,
-        ),
-        TextFormField(
-          enabled: true,
-          maxLines: 1,
-          readOnly: true,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 30),
-          decoration: InputDecoration(
-            labelText: 'Date of time',
-            labelStyle: TextStyle(
-                color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.purple),
+          TextFormField(
+            enabled: true,
+            maxLines: 1,
+            readOnly: true,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30),
+            decoration: InputDecoration(
+              labelText: 'Date of time',
+              labelStyle: TextStyle(
+                  color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.purple),
+              ),
+              enabledBorder: new UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0)),
             ),
-            enabledBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.0)),
+            onTap: () {
+              DatePicker.showTimePicker(context,
+                  showTitleActions: true,
+                  showSecondsColumn: false, onChanged: (date) {
+                print('change $date in time zone ' +
+                    date.timeZoneOffset.inHours.toString());
+              }, onConfirm: (date) {
+                _dobTimeTextController.value = TextEditingValue(
+                    text: date.hour.toString() + ":" + date.minute.toString());
+                print('confirm $date');
+                setState(() {
+                  time = date;
+                });
+              }, currentTime: DateTime.now());
+            },
+            controller: _dobTimeTextController,
           ),
-          onTap: () {
-            DatePicker.showTimePicker(context,
-                showTitleActions: true,
-                showSecondsColumn: false, onChanged: (date) {
-              print('change $date in time zone ' +
-                  date.timeZoneOffset.inHours.toString());
-            }, onConfirm: (date) {
-              _dobTimeTextController.value = TextEditingValue(
-                  text: date.hour.toString() + ":" + date.minute.toString());
-              print('confirm $date');
-              setState(() {
-                time = date;
-              });
-            }, currentTime: DateTime.now());
-          },
-          controller: _dobTimeTextController,
-        ),
-        TextFormField(
-          readOnly: true,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 30),
-          decoration: InputDecoration(
-            labelText: 'Horoscope',
-            labelStyle: TextStyle(
-                color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.purple),
+          TextFormField(
+            readOnly: true,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30),
+            decoration: InputDecoration(
+              labelText: 'Horoscope',
+              labelStyle: TextStyle(
+                  color: Colors.black87, fontSize: 17, fontFamily: 'AvenirLight'),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.purple),
+              ),
+              enabledBorder: new UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 1.0)),
             ),
-            enabledBorder: new UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 1.0)),
+            controller: _horoscopeTextController,
           ),
-          controller: _horoscopeTextController,
-        ),
-        Container(
-          width: double.infinity,
-          height: 40,
-          padding: EdgeInsets.only(left: 15, right: 15),
-          margin: EdgeInsets.only(top: 50),
-          child: ElevatedButton(
-              onPressed: !isEnabled ? null : onSave, child: Text("Save")),
-        )
-      ],
+          Container(
+            width: double.infinity,
+            height: 40,
+            padding: EdgeInsets.only(left: 15, right: 15),
+            margin: EdgeInsets.only(top: 50),
+            child: ElevatedButton(
+                onPressed: !isEnabled ? null : onSave, child: Text("Save")),
+          )
+        ],
+      ),
     );
   }
 
