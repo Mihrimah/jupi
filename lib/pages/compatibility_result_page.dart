@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jupi/enum/horoscope_enum.dart';
+import 'package:jupi/model/compatibility_response.dart';
 import 'package:jupi/model/horoscope.dart';
 import 'package:jupi/model/user.dart';
+import 'package:jupi/repository/firebase_repository.dart';
 import 'package:provider/provider.dart';
 
 class CompatibilityResultPage extends StatefulWidget {
@@ -17,19 +20,37 @@ class CompatibilityResultPage extends StatefulWidget {
 }
 
 class _CompatibilityResultPageState extends State<CompatibilityResultPage> {
-  int rate = 89; //şimdilik elle verdim.
+  late FirebaseRepository _firebaseRepository;
+  CompatibilityResponse? _compatibilityResponse;
+  bool isLoading = true;
 
   @override
   void initState() {
+    _firebaseRepository = FirebaseRepository();
     super.initState();
-    change();
+    fetchComparedDetails(widget.ownHoroscope, widget.otherHoroscope);
   }
 
-  Widget myWidget = Text("vs");
-  void change(){
-    setState(() {
-      myWidget = Text(rate.toString());
+  void fetchComparedDetails(
+      HoroscopeEnum ownHoroscope, HoroscopeEnum otherHoroscope) {
+    _firebaseRepository
+        .findComparedDetailsBetweenHoroscopesCollection(
+            ownHoroscope, otherHoroscope)
+        .then((value) {
+      _compatibilityResponse = convertToTrueNodeDesc(value);
+      setState(() {
+        isLoading = false;
+      });
     });
+  }
+
+  CompatibilityResponse convertToTrueNodeDesc(QuerySnapshot querySnapshot) {
+    Map map = querySnapshot.docs[0].data()! as Map;
+    return CompatibilityResponse(
+        horoscopeEnumFromString(map['sign']),
+        horoscopeEnumFromString(map['partner_sign']),
+        map['description'],
+        map['love_percentage']);
   }
 
   @override
@@ -49,9 +70,7 @@ class _CompatibilityResultPageState extends State<CompatibilityResultPage> {
                 Container(
                   width: 100,
                   height: 100,
-                  child: Center(
-                      child:
-                          Text(widget.ownHoroscope.name())),
+                  child: Center(child: Text(widget.ownHoroscope.name())),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(40),
@@ -73,7 +92,10 @@ class _CompatibilityResultPageState extends State<CompatibilityResultPage> {
                       );
                     },
                     duration: Duration(milliseconds: 5000),
-                    child: myWidget,
+                    child: Text(_compatibilityResponse == null
+                        ? "%?"
+                        : "%" +
+                            _compatibilityResponse!.lovePercentage.toString()),
                   ),
                 ),
                 Container(
@@ -97,8 +119,22 @@ class _CompatibilityResultPageState extends State<CompatibilityResultPage> {
               height: 25,
             ),
             Expanded(
-                child: Column(
-              children: [Text("Birşeyler yazacak")],
+                child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Text("Description",
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  ),
+                  Text(_compatibilityResponse == null
+                      ? "Not found Description."
+                      : _compatibilityResponse!.description)
+                ],
+              ),
             ))
           ],
         ),

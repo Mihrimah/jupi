@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jupi/constant/true_node_constant.dart';
 import 'package:jupi/enum/horoscope_enum.dart';
@@ -6,6 +7,7 @@ import 'package:jupi/model/horoscope.dart';
 import 'package:jupi/model/true_node.dart';
 import 'package:jupi/model/true_node_desc.dart';
 import 'package:jupi/model/user.dart';
+import 'package:jupi/repository/firebase_repository.dart';
 import 'package:provider/provider.dart';
 
 class DashPage extends StatefulWidget {
@@ -24,24 +26,36 @@ class _DashPageState extends State<DashPage> {
   bool isLoading = true;
   late TrueNodeDesc trueNodeDesc;
 
+  late FirebaseRepository _firebaseRepository;
+
   @override
   void initState() {
     super.initState();
+    _firebaseRepository = FirebaseRepository();
     trueNodeHoroscope = findTrueNode();
-    trueNodeDesc = fetchDetails();
-    setState(() {
-      isLoading = false;
-    });
+    fetchDetails(trueNodeHoroscope);
   }
 
-  TrueNodeDesc fetchDetails() {
+  TrueNodeDesc convertToTrueNodeDesc(QuerySnapshot querySnapshot) {
+    Map map = querySnapshot.docs[0].data()! as Map;
     return TrueNodeDesc(
-        HoroscopeEnum.Taurus,
-        "Ay Düğümü Ay'ın iki yörünge düğümünden, yani Ay'ın yörüngesinin ekliptikle kesiştiği iki noktadır. Yükselen düğüm Ay'ın kuzey ekliptik yarımküreye girdiği yerdir, inen düğüm ise Ay'ın güney ekliptik yarıküreye girdiği yerdir. Doğum tarihinize göre Kuzey Ay Düğümünüz Oğlak'tır. Kuzey Ay Düğümü ruhumuzun pusulasıdır ve kişinin ay düğümü hangi eksendeyse bu hayatta hep oradan sınanır.",
-        "Duygusal ve ruhsal olarak bağlılık kurma ihtiyacı hissedersiniz. Bu bağlılık başkalarına almak için vermek gibi bir ilişkiyi getirir. Kendinizden verirsiniz çünkü karşılığını almak istersiniz, karşınızdakinden bir şey alamama korkunuzdan dolayı bunu sonlandırmaktan çekinirsiniz. Geniş bir duygusal hassasiyet ve tecrübeye sahip olmanız size birlikte olduğunuz kişilere duygusal olarak bakım ve destek verme kabiliyeti, güçlü bir aile kurma kapasitesi verir. Sevdiğiniz kişilere aşırı korumacı tutumunuz ve içten içe sizin onlara bağımlı olmanız sizin gelişiminizdeki en büyük engeldir. ",
-        "Yengeç ve Oğlak Ay düğümü ekseni sorumluluklarla ilgilidir. Buradaki amaç ruhun çocukluktan çıkıp olgunluğa erişmesidir. Yaşamda sorumluluk almayı ve disiplin kurabilmeyi öğrenmeniz gerekmektedir. Siz kendi hayatınızın sorumluluğunu almalı, kendi ihtiyaçlarınızı karşılamalı, kendi ayaklarınızın üstünde durmalısınız ve sizi geri çeken bağlardan kurtulmalısınız. Başkalarının enerjilerine bağlı kalmamalısınız, size ihtiyaçları olan insanlara hemen kucak açmamalı onlar talep ettiğinde yardımcı olmalısınız. Kuzey Ay Düğümü Oğlak olan kadınların baba figürünü aşırı derecede arayışı, erkeklerin ise baba figürünü üstlenmek isteyişi gözlemlenir.",
-        "Almanız gereken ders aşırı duygusallığı kontrol ederek öz disiplin ile dış dünyada otoriter konuma gelmektir. Kariyerinizde başarıya ulaşmak istersiniz. Önceliğiniz kendi içinizdeki çocuğun duygusallığı, bakıma muhtaçlığı ve dikkate alınma ihtiyacını çözümlemek olmalıdır. İçsel temizliğinizi yaptıktan sonra asıl hedefiniz olan Oğlak'a giderek içinizdeki çocuğun bakım ve sorumluluğunu almalısınız. Sonrasında asıl isteğiniz olan kişisel yaşamdan daha büyük bir idealin peşinde koşabilirsiniz. ");
+        horoscopeEnumFromString(map['name']),
+        map['info'],
+        map['love'],
+        map['overall'],
+        map['work']);
   }
+
+  void fetchDetails(HoroscopeEnum horoscope) {
+    _firebaseRepository
+        .findTrueNodeDescriptionByHoroscopeCollection(horoscope)
+        .then((value) {
+      trueNodeDesc = convertToTrueNodeDesc(value);
+      setState(() {
+        isLoading = false;
+      });
+    });
+}
 
   HoroscopeEnum findTrueNode() {
     for (TrueNode t in TrueNodeConstant.TRUE_NODES) {
@@ -92,7 +106,10 @@ class _DashPageState extends State<DashPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: Text(trueNodeDesc.love, style: TextStyle(fontSize: 17),),
+                      child: Text(
+                        trueNodeDesc.love,
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
                     Text(
                       "Overall",
@@ -101,7 +118,10 @@ class _DashPageState extends State<DashPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: Text(trueNodeDesc.overall, style: TextStyle(fontSize: 17),),
+                      child: Text(
+                        trueNodeDesc.overall,
+                        style: TextStyle(fontSize: 17),
+                      ),
                     ),
                     Text(
                       "Work",
@@ -110,7 +130,10 @@ class _DashPageState extends State<DashPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: Text(trueNodeDesc.work, style: TextStyle(fontSize: 17),),
+                      child: Text(
+                        trueNodeDesc.work,
+                        style: TextStyle(fontSize: 17),
+                      ),
                     )
                     /*CarouselSlider(
           carouselController: buttonCarouselController,
