@@ -63,7 +63,7 @@ class _CompatibilityPageState extends State<CompatibilityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Erkan"),
+        title: Text("Compatibility"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 15),

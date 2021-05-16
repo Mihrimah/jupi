@@ -76,7 +76,7 @@ class _DashPageState extends State<DashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Erkan"),
+        title: Text("Kadgad"),
       ),
       body: isLoading
           ? progressIndicator()

@@ -14,7 +14,7 @@ class _OwnHoroscopePageState extends State<OwnHoroscopePage> {
 
   writeInfo(String val) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(20.0),
       child: ListView(children: [Text(val, style: TextStyle(fontSize: 20),)]),
     );
   }
@@ -23,7 +23,7 @@ class _OwnHoroscopePageState extends State<OwnHoroscopePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Erkan"),
+        title: Text("You"),
       ),
       body: DefaultTabController(
         length: 4,
